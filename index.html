@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لسان القرآن · ക്ലാസ് 5</title>
+<style>
+:root{
+  --navy:#0f2a4a;
+  --navy2:#173b67;
+  --blue:#2a7fc9;
+  --blue2:#4a9fe0;
+  --sky:#eaf5ff;
+  --yellow:#ffe27a;
+  --green:#16845b;
+  --green-bg:#e4f4eb;
+  --red:#c64242;
+  --ink:#182538;
+  --muted:#5d6b7b;
+  --card:#ffffff;
+  --line:#d7e3ef;
+  --shadow:0 8px 30px rgba(23,59,103,.08);
+  --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:system-ui,"Noto Sans Malayalam","Noto Sans Arabic",sans-serif;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #dfeeff 0%, transparent 60%),
+    radial-gradient(1000px 500px at 110% 10%, #e8f7ee 0%, transparent 55%),
+    #f2f7fc;
+  color:var(--ink);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+/* ---------- Header ---------- */
+header{
+  background:linear-gradient(135deg,#0d2440 0%,#173b67 40%,#2a7fc9 100%);
+  color:#fff;
+  padding:26px 18px 22px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+header::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.12), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(255,226,122,.10), transparent 40%);
+  pointer-events:none;
+}
+header h1{
+  font-size:clamp(24px,4vw,34px);
+  margin:0 0 6px;
+  letter-spacing:.3px;
+  text-shadow:0 2px 12px rgba(0,0,0,.25);
+  position:relative;
+}
+header p{
+  margin:0;
+  font-size:clamp(13px,2vw,15px);
+  opacity:.92;
+  position:relative;
+}
+/* ---------- Layout ---------- */
+main{
+  max-width:1040px;
+  margin:0 auto;
+  padding:22px 14px 60px;
+}
+.panel{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+}
+h2{
+  font-size:clamp(18px,2.6vw,22px);
+  margin:0 0 14px;
+  color:var(--navy);
+  display:flex;align-items:center;gap:8px;
+}
+/* ---------- Lesson grid (menu) ---------- */
+.lesson-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:12px;
+}
+.lesson{
+  position:relative;
+  border:2px solid var(--line);
+  background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+  border-radius:14px;
+  padding:14px 14px 12px;
+  text-align:left;
+  cursor:pointer;
+  min-height:96px;
+  color:var(--ink);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+  font-family:inherit;
+}
+.lesson:hover{
+  transform:translateY(-3px);
+  border-color:var(--blue);
+  box-shadow:0 10px 24px rgba(42,127,201,.14);
+  background:var(--sky);
+}
+.lesson.active{
+  border-color:var(--blue);
+  background:linear-gradient(180deg,#eaf5ff 0%,#dceefc 100%);
+  box-shadow:0 6px 20px rgba(42,127,201,.18);
+}
+.lesson .num{
+  display:inline-grid;place-items:center;
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,#ffe27a,#ffc93c);
+  color:#5a3d00;
+  font-weight:900;
+  font-size:14px;
+  margin-right:8px;
+  box-shadow:0 3px 8px rgba(255,201,60,.35);
+}
+.lesson .mltitle{
+  font-weight:750;
+  display:block;
+  margin:10px 0 4px;
+  font-size:15px;
+  line-height:1.35;
+}
+.lesson .arabic{
+  font-family:"Noto Naskh Arabic","Amiri",serif;
+  font-size:18px;
+  direction:rtl;
+  color:#a34b26;
+  line-height:1.5;
+}
+/* ---------- Work area ---------- */
+#workArea{display:none}
+.topline{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  margin-bottom:6px;
+}
+#lessonHeading{margin-bottom:6px}
+.pill{
+  background:var(--green-bg);
+  color:#176b4c;
+  border-radius:99px;
+  padding:7px 14px;
+  font-weight:800;
+  font-size:13px;
+  white-space:nowrap;
+  box-shadow:inset 0 0 0 1px rgba(22,132,91,.15);
+}
+.progress{
+  height:10px;
+  background:#e4ebf2;
+  border-radius:99px;
+  overflow:hidden;
+  margin:14px 0 18px;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.05);
+}
+.bar{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#22a06b,#3dc98c);
+  border-radius:99px;
+  transition:width .35s cubic-bezier(.2,.8,.2,1);
+}
+/* ---------- Questions ---------- */
+.question{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px;
+  margin:14px 0;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  box-shadow:0 2px 10px rgba(23,59,103,.04);
+  animation:fadeUp .35s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.qnum{
+  color:var(--blue);
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+}
+.prompt{
+  font-size:clamp(15px,2.3vw,17px);
+  font-weight:750;
+  margin:8px 0 12px;
+  line-height:1.6;
+}
+.ml{
+  font-family:"Noto Naskh Arabic","Amiri",serif;
+  direction:rtl;
+  text-align:right;
+  font-size:clamp(20px,3vw,24px);
+  line-height:1.9;
+  color:#243b55;
+}
+.options{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:9px;
+  margin-top:6px;
+}
+.option{
+  border:1.5px solid #cad8e7;
+  border-radius:11px;
+  padding:11px 12px;
+  background:#fafdff;
+  cursor:pointer;
+  font-size:16px;
+  min-height:48px;
+  color:var(--ink);
+  font-family:inherit;
+  transition:transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+  text-align:center;
+}
+.option:hover{
+  border-color:var(--blue);
+  background:#edf6ff;
+  transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(42,127,201,.10);
+}
+.option.correct{
+  background:#baf2ce!important;
+  border:2px solid #16845b!important;
+  color:#105b37!important;
+  font-weight:700;
+  box-shadow:0 4px 12px rgba(22,132,91,.18);
+}
+.option.wrong{
+  background:#ffcaca!important;
+  border:2px solid #c64242!important;
+  color:#8d1717!important;
+  animation:shake .3s ease;
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-4px)}
+  75%{transform:translateX(4px)}
+}
+.option:disabled{cursor:default;opacity:1;transform:none!important;box-shadow:none!important}
+.feedback{
+  font-weight:700;
+  margin-top:12px;
+  min-height:24px;
+  font-size:14px;
+  line-height:1.5;
+  padding:0 2px;
+}
+.feedback.good{color:var(--green)}
+.feedback.bad{color:var(--red)}
+/* ---------- Actions ---------- */
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+button.primary,button.secondary{
+  border:0;
+  border-radius:12px;
+  padding:12px 18px;
+  font-weight:800;
+  font-size:15px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.primary{
+  background:linear-gradient(135deg,#2a7fc9,#4a9fe0);
+  color:#fff;
+  box-shadow:0 6px 16px rgba(42,127,201,.28);
+}
+.secondary{
+  background:#e8eef5;
+  color:#243b55;
+}
+.primary:hover,.secondary:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.03);
+  box-shadow:0 8px 20px rgba(42,127,201,.22);
+}
+.primary:active,.secondary:active{transform:translateY(0)}
+#result{
+  font-size:clamp(15px,2.2vw,18px);
+  font-weight:800;
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:12px;
+  background:linear-gradient(180deg,#f4f9ff,#eaf5ff);
+  color:var(--navy2);
+  line-height:1.5;
+}
+#result:empty{display:none}
+/* ---------- Footer ---------- */
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:12.5px;
+  padding:16px;
+  letter-spacing:.3px;
+  border-top:1px solid var(--line);
+  background:#fff;
+}
+@media(max-width:480px){
+  main{padding:14px 10px 40px}
+  .panel{padding:14px}
+  .prompt{font-size:15.5px}
+  .options{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+  .option{font-size:15px;min-height:44px;padding:10px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌟 لسان القرآن</h1>
+  <p>അറബി ഭാഷാ പഠനം · ക്ലാസ് 5 · ഒരൊറ്റ പേജിൽ</p>
+</header>
+<main>
+
+<section class="panel">
+  <h2>📚 പാഠങ്ങൾ</h2>
+  <div class="lesson-grid" id="lessonList"></div>
+</section>
+
+<section class="panel" id="workArea">
+  <div class="topline">
+    <div>
+      <h2 id="lessonHeading"></h2>
+      <div class="arabic" id="topicHeading"></div>
+    </div>
+    <span class="pill" id="scorePill">0 / 0 ശരി</span>
+  </div>
+  <div class="progress"><div class="bar" id="progressBar"></div></div>
+  <div id="questions"></div>
+  <div class="actions">
+    <button class="primary" onclick="checkAll()">ഫലം പരിശോധിക്കാം ✓</button>
+    <button class="secondary" onclick="resetLesson()">വീണ്ടും ചെയ്യാം ↻</button>
+    <button class="secondary" onclick="nextLesson()">അടുത്ത പാഠം →</button>
+  </div>
+  <div id="result"></div>
+</section>
+
+</main>
+<footer>HIMAYATHUL ISLAM MADRASA - NADUVATHUR</footer>
+
+<script>
+const lessons = [
+{title:"മദീന മുനവ്വറ", ar:"المدينة المنورة", topic:"الاسم والفعل والحرف — നാമം, ക്രിയ, അവ്യയം", qs:[
+["الاسم ഏതാണ്?","مَدْرَسَةٌ","يَكْتُبُ","فِي","إِلَى",0,"مَدْرَسَةٌ ഒരു പേരാണ്."],
+["الفعل ഏതാണ്?","كِتَابٌ","جَلَسَ","مِنْ","عَلَى",1,"جَلَسَ ഒരു പ്രവൃത്തിയെ സൂചിപ്പിക്കുന്നു."],
+["حرف ഏതാണ്?","طَالِبٌ","يَلْعَبُ","فِي","قَلَمٌ",2,"فِي ഒരു حرف ആണ്."],
+["‘പുസ്തകം’ എന്ന അർത്ഥമുള്ള الاسم തിരഞ്ഞെടുക്കൂ.","كِتَابٌ","يَذْهَبُ","مِنْ","يَجْلِسُ",0,"كِتَابٌ = പുസ്തകം."],
+["‘പോകുന്നു’ എന്ന അർത്ഥമുള്ള الفعل തിരഞ്ഞെടുക്കൂ.","بَيْتٌ","إِلَى","يَذْهَبُ","مَدْرَسَةٌ",2,"يَذْهَبُ = പോകുന്നു."],
+["‘في البيت’ എന്നതിൽ حرف ഏതാണ്?","الْبَيْتِ","فِي","هُوَ","كَبِيرٌ",1,"فِي ആണ് حرف."],
+["വ്യത്യസ്തമായത് കണ്ടെത്തൂ.","قَلَمٌ","مُعَلِّمٌ","يَشْرَبُ","بَيْتٌ",2,"يَشْرَبُ ക്രിയയാണ്; മറ്റുള്ളവ പേരുകളാണ്."],
+["ശരിയായ ജോഡി തിരഞ്ഞെടുക്കൂ.","الاسم — പ്രവൃത്തി","الفعل — പേര്","الحرف — ബന്ധിപ്പിക്കുന്ന പദം","الفعل — സ്ഥലം",2,"الحرف പദങ്ങൾ തമ്മിൽ ബന്ധിപ്പിക്കുന്നു."]]},
+{title:"കുട്ടികളിൽ ആദ്യം വിശ്വസിച്ചവൻ", ar:"أَوَّلُ مَنْ آمَنَ مِنَ الأَطْفَالِ", topic:"الجملة الاسمية — നാമവാക്യം", qs:[
+["الجملة الاسمية സാധാരണയായി തുടങ്ങുന്നത് എന്തുകൊണ്ട്?","اسم","فعل","حرف","رقم",0,"നാമവാക്യം اسم കൊണ്ട് തുടങ്ങുന്നു."],
+["الجملة الاسمية തിരഞ്ഞെടുക്കൂ.","ذَهَبَ عَلِيٌّ","الطَّالِبُ مُجْتَهِدٌ","يَلْعَبُ الوَلَدُ","فِي البَيْتِ",1,"الطَّالِبُ مُجْتَهِدٌ ഒരു നാമവാക്യമാണ്."],
+["‘കുട്ടി സന്തോഷവാനാണ്’ എന്നതിന് അനുയോജ്യം ഏത്?","الوَلَدُ سَعِيدٌ","سَعِيدٌ الوَلَدَ","يَسْعَدُ الوَلَدُ","إِلَى الوَلَدِ",0,"الوَلَدُ سَعِيدٌ = കുട്ടി സന്തോഷവാനാണ്."],
+["الجملة الفعلية ഏതാണ്?","البَيْتُ كَبِيرٌ","البِنْتُ مُجْتَهِدَةٌ","كَتَبَ أَحْمَدُ","المُعَلِّمُ حَاضِرٌ",2,"كَتَبَ أَحْمَدُ ക്രിയകൊണ്ട് തുടങ്ങുന്നു."],
+["വാക്യം പൂർത്തിയാക്കൂ: الطَّالِبُ ____","مُجْتَهِدٌ","يَكْتُبُ","فِي","مِنْ",0,"الطَّالِبُ مُجْتَهِدٌ."],
+["‘വീട് വലുതാണ്’ തിരഞ്ഞെടുക്കൂ.","البَيْتُ كَبِيرٌ","كَبُرَ البَيْتُ","يَكْبُرُ","فِي البَيْتِ",0,"ഇത് നാമവാക്യമാണ്."],
+["ശരിയോ തെറ്റോ: المُعَلِّمُ حَاضِرٌ ഒരു നാമവാക്യമാണ്.","ശരി","തെറ്റ്","—","—",0,"ശരി. ഇത് اسم കൊണ്ട് തുടങ്ങുന്നു."],
+["നാമവാക്യം കണ്ടെത്തൂ.","تَذْهَبُ فَاطِمَةُ","فَاطِمَةُ طَالِبَةٌ","اِجْلِسْ","لَا تَكْذِبْ",1,"فَاطِمَةُ طَالِبَةٌ ഒരു നാമവാക്യമാണ്."]]},
+{title:"ഒരിക്കലും കള്ളം പറയരുത്", ar:"لَا تَكْذِبْ أَبَدًا", topic:"الجملة الفعلية — ക്രിയാവാക്യം", qs:[
+["الجملة الفعلية സാധാരണയായി തുടങ്ങുന്നത് എന്തുകൊണ്ട്?","اسم","فعل","حرف جر","صفة",1,"ക്രിയാവാക്യം فعل കൊണ്ട് തുടങ്ങുന്നു."],
+["ക്രിയാവാക്യം തിരഞ്ഞെടുക്കൂ.","الوَلَدُ نَشِيطٌ","البَيْتُ جَمِيلٌ","كَتَبَ الطَّالِبُ","الطَّالِبَةُ مُجْتَهِدَةٌ",2,"كَتَبَ الطَّالِبُ ക്രിയകൊണ്ട് തുടങ്ങുന്നു."],
+["‘അഹ്മദ് വായിച്ചു’ എന്നതിന് അനുയോജ്യം ഏത്?","أَحْمَدُ قَارِئٌ","قَرَأَ أَحْمَدُ","أَحْمَدُ فِي البَيْتِ","هَذَا أَحْمَدُ",1,"قَرَأَ = വായിച്ചു."],
+["വാക്യത്തിലെ فعل കണ്ടെത്തൂ: يَكْتُبُ الوَلَدُ","الوَلَدُ","يَكْتُبُ","الـ","—",1,"يَكْتُبُ ആണ് ക്രിയ."],
+["വാക്യം പൂർത്തിയാക്കൂ: ____ الطَّالِبُ الدَّرْسَ.","قَرَأَ","الطَّالِبُ","فِي","هَذَا",0,"قَرَأَ الطَّالِبُ الدَّرْسَ."],
+["‘പെൺകുട്ടി പോയി’ എന്നതിന് അനുയോജ്യം ഏത്?","البِنْتُ ذَاهِبَةٌ","ذَهَبَتِ البِنْتُ","البِنْتُ جَمِيلَةٌ","هَذِهِ بِنْتٌ",1,"ذَهَبَتْ = പോയി."],
+["ശരിയോ തെറ്റോ: جَلَسَ مُحَمَّدٌ ക്രിയാവാക്യമാണ്.","ശരി","തെറ്റ്","—","—",0,"ശരി. جَلَسَ എന്ന فعل കൊണ്ടാണ് തുടങ്ങുന്നത്."],
+["ക്രിയാവാക്യമല്ലാത്തത് ഏത്?","يَلْعَبُ الوَلَدُ","ذَهَبَ عَلِيٌّ","الطَّقْسُ جَمِيلٌ","كَتَبَتْ فَاطِمَةُ",2,"الطَّقْسُ جَمِيلٌ നാമവാക്യമാണ്."]]},
+{title:"ആരാണ് വിജയി?", ar:"مَنِ الفَائِزُ؟", topic:"أدوات الاستفهام — ചോദ്യപദങ്ങൾ", qs:[
+["‘ആര്?’ എന്നതിന് ഏത് അറബി പദം?","مَنْ","مَتَى","أَيْنَ","كَيْفَ",0,"مَنْ = ആര്?"],
+["‘എവിടെ?’ എന്നതിന് ഏത് പദം?","مَاذَا","مَتَى","أَيْنَ","مَنْ",2,"أَيْنَ = എവിടെ?"],
+["‘എപ്പോൾ?’ എന്നതിന് അനുയോജ്യം ഏത്?","كَيْفَ","مَتَى","مَنْ","لِمَاذَا",1,"مَتَى = എപ്പോൾ?"],
+["‘എന്ത്?’ എന്നതിന് ഏത് പദം?","مَاذَا","أَيْنَ","مَنْ","كَمْ",0,"مَاذَا = എന്ത്?"],
+["‘എങ്ങനെ?’ എന്നതിന് ഏത് പദം?","مَتَى","كَيْفَ","أَيْنَ","مَنْ",1,"كَيْفَ = എങ്ങനെ?"],
+["വാക്യം പൂർത്തിയാക്കൂ: ____ اسْمُكَ؟","أَيْنَ","مَنْ","مَا","مَتَى",2,"مَا اسْمُكَ؟ = നിന്റെ പേരെന്താണ്?"],
+["‘നീ എവിടെയാണ്?’ ശരിയായത് ഏത്?","مَنْ أَنْتَ؟","أَيْنَ أَنْتَ؟","مَتَى أَنْتَ؟","كَيْفَ اسْمُكَ؟",1,"أَيْنَ أَنْتَ؟"],
+["‘എത്ര?’ എന്നതിന് അനുയോജ്യം ഏത്?","كَمْ","مَنْ","أَيْنَ","كَيْفَ",0,"كَمْ = എത്ര?"]]},
+{title:"ഇവർ ആരാണ്?", ar:"مَنْ هَؤُلَاءِ؟", topic:"أسماء الإشارة — സൂചകപദങ്ങൾ", qs:[
+["അടുത്തുള്ള ഒരാൾ (പുരുഷൻ):","هَذَا","هَذِهِ","هَؤُلَاءِ","ذَلِكَ",0,"هَذَا = ഈ / ഈയാൾ (പുരുഷൻ)."],
+["അടുത്തുള്ള ഒരാൾ (സ്ത്രീ):","هَذَا","هَذِهِ","أُولَئِكَ","هُنَاكَ",1,"هَذِهِ = ഈ / ഈയാൾ (സ്ത്രീ)."],
+["അടുത്തുള്ള പലരെ സൂചിപ്പിക്കാൻ:","هَذَا","ذَلِكَ","هَؤُلَاءِ","تِلْكَ",2,"هَؤُلَاءِ = ഇവർ."],
+["ദൂരെയുള്ള പുരുഷനെ സൂചിപ്പിക്കുന്നത്:","هَذَا","هَذِهِ","ذَلِكَ","هَؤُلَاءِ",2,"ذَلِكَ = ആ / അവൻ (ദൂരെ)."],
+["‘ഇത് ഒരു പുസ്തകമാണ്’ തിരഞ്ഞെടുക്കൂ.","هَذَا كِتَابٌ","هَذِهِ كِتَابٌ","هَؤُلَاءِ كِتَابٌ","مَنْ كِتَابٌ",0,"كِتَابٌ പുരുഷലിംഗ നാമമാണ്."],
+["‘ഈ പെൺകുട്ടി’ ഏതാണ്?","هَذَا البِنْتُ","هَذِهِ البِنْتُ","هَؤُلَاءِ البِنْتُ","ذَلِكَ البِنْتُ",1,"البِنْتُ സ്ത്രീലിംഗമാണ്."],
+["‘ഇവർ വിദ്യാർത്ഥികളാണ്’ ഏതാണ്?","هَذَا طُلَّابٌ","هَؤُلَاءِ طُلَّابٌ","هَذِهِ طُلَّابٌ","مَتَى طُلَّابٌ",1,"هَؤُلَاءِ പലരെ സൂചിപ്പിക്കുന്നു."],
+["സൂചകപദം കണ്ടെത്തൂ: هَذَا طَالِبٌ","طَالِبٌ","هَذَا","—","—",1,"هَذَا ആണ് اسم إشارة."]]},
+{title:"മാതാപിതാക്കളോട് നന്മ ചെയ്യുക", ar:"وَبِالْوَالِدَيْنِ إِحْسَانًا", topic:"صيغ المتكلم من الماضي والمضارع — أنا، نحن", qs:[
+["‘ഞാൻ എഴുതി’ എന്നതിന് ശരിയായത് ഏത്?","كَتَبْتُ","كَتَبْتَ","كَتَبَ","كَتَبُوا",0,"أنا مع الماضي: كَتَبْتُ."],
+["‘ഞങ്ങൾ എഴുതി’ എന്നതിന് ശരിയായത് ഏത്?","كَتَبَ","كَتَبْتُ","كَتَبْنَا","كَتَبُوا",2,"نحن مع الماضي: كَتَبْنَا."],
+["‘ഞാൻ എഴുതുന്നു’ എന്നതിന് ശരിയായത് ഏത്?","أَكْتُبُ","نَكْتُبُ","يَكْتُبُ","تَكْتُبُ",0,"أنا مع المضارع: أَكْتُبُ."],
+["‘ഞങ്ങൾ എഴുതുന്നു’ എന്നതിന് ശരിയായത് ഏത്?","أَكْتُبُ","نَكْتُبُ","يَكْتُبُ","تَكْتُبُ",1,"نحن مع المضارع: نَكْتُبُ."],
+["أنا ____ الدرسَ. (ഞാൻ പാഠം പഠിച്ചു)","دَرَسْتُ","دَرَسْنَا","دَرَسَ","دَرَسُوا",0,"أنا دَرَسْتُ."],
+["نحن ____ في المدرسةِ. (ഞങ്ങൾ പഠിക്കുന്നു)","أَدْرُسُ","يَدْرُسُ","نَدْرُسُ","تَدْرُسُ",2,"نحن നോട് نَدْرُسُ ഉപയോഗിക്കുന്നു."],
+["‘ഞങ്ങൾ പോയി’ എന്നതിന് ശരിയായത് ഏത്?","ذَهَبْتُ","ذَهَبْنَا","ذَهَبَ","ذَهَبَتْ",1,"نحن ذَهَبْنَا."],
+["‘ഞാൻ സഹായിക്കുന്നു’ എന്നതിന് ശരിയായത് ഏത്?","أُسَاعِدُ","نُسَاعِدُ","يُسَاعِدُ","تُسَاعِدُ",0,"أنا أُسَاعِدُ."]]},
+{title:"മക്കയിലേക്ക് യാത്ര", ar:"رِحْلَةٌ إِلَى مَكَّةَ المُكَرَّمَةِ", topic:"صيغ المخاطب من الفعل المضارع — أنتَ، أنتِ، أنتما، أنتم، أنتنّ", qs:[
+["أنتَ (നീ — ആൺ) ‘നീ പോകുന്നു’:","تَذْهَبُ","يَذْهَبُ","أَذْهَبُ","نَذْهَبُ",0,"أنتَ تَذْهَبُ."],
+["أنتِ (നീ — പെൺ) ‘നീ പോകുന്നു’:","تَذْهَبُ","تَذْهَبِينَ","يَذْهَبُ","يَذْهَبُونَ",1,"أنتِ تَذْهَبِينَ."],
+["أنتما (നിങ്ങൾ രണ്ടുപേർ) ‘നിങ്ങൾ രണ്ടുപേർ പോകുന്നു’:","تَذْهَبَانِ","تَذْهَبُونَ","تَذْهَبِينَ","يَذْهَبَانِ",0,"أنتما تَذْهَبَانِ."],
+["أنتم (നിങ്ങൾ — പുരുഷന്മാർ/ആൺകുട്ടികൾ) ‘പോകുന്നു’:","تَذْهَبْنَ","تَذْهَبُونَ","تَذْهَبِينَ","يَذْهَبُونَ",1,"أنتم تَذْهَبُونَ."],
+["أنتنّ (നിങ്ങൾ — സ്ത്രീകൾ/പെൺകുട്ടികൾ) ‘പോകുന്നു’:","تَذْهَبَانِ","تَذْهَبُونَ","تَذْهَبْنَ","تَذْهَبِينَ",2,"أنتنّ تَذْهَبْنَ."],
+["أنتِ ____ الدرسَ. (നീ പഠിക്കുന്നു)","تَدْرُسِينَ","يَدْرُسُ","أَدْرُسُ","نَدْرُسُ",0,"أنتِ ത്തോടൊപ്പം تَدْرُسِينَ."],
+["أنتم ____ القرآنَ. (നിങ്ങൾ വായിക്കുന്നു)","تَقْرَأُ","تَقْرَأِينَ","تَقْرَؤُونَ","أَقْرَأُ",2,"أنتم تَقْرَؤُونَ."],
+["أنتما ____ إلى مكةَ. (നിങ്ങൾ രണ്ടുപേർ യാത്രചെയ്യുന്നു)","تُسَافِرَانِ","تُسَافِرِينَ","يُسَافِرُ","نُسَافِرُ",0,"أنتما تُسَافِرَانِ."]]}
+];
+
+let current=0, answers={}, checked={};
+const $=id=>document.getElementById(id);
+
+function renderLessons(){
+  $('lessonList').innerHTML = lessons.map((l,i)=>`
+    <button class="lesson ${i===current?'active':''}" onclick="openLesson(${i})">
+      <span class="num">${i+1}</span>
+      <b style="font-size:13px;opacity:.7">പാഠം ${i+1}</b>
+      <span class="mltitle">${l.title}</span>
+      <span class="arabic">${l.ar}</span>
+    </button>`).join('');
+}
+
+function openLesson(i){
+  current=i; answers={}; checked={};
+  renderLessons();
+  $('workArea').style.display='block';
+  $('lessonHeading').textContent = `പാഠം ${i+1} — ${lessons[i].title}`;
+  $('topicHeading').textContent = lessons[i].topic;
+  $('result').textContent='';
+  $('scorePill').textContent = `0 / ${lessons[i].qs.length} ശരി`;
+  renderQuestions();
+  $('workArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderQuestions(){
+  const l = lessons[current];
+  $('questions').innerHTML = l.qs.map((q,qi)=>`
+    <div class="question" id="q${qi}">
+      <div class="qnum">ആക്ടിവിറ്റി ${qi+1} / ${l.qs.length}</div>
+      <div class="prompt">${q[0]}</div>
+      ${/[\u0600-\u06FF]/.test(q[1])&&q[1].includes(' ') ? `<div class="ml" style="margin-bottom:10px">${q[1]}</div>` : ''}
+      <div class="options">
+        ${q.slice(1,5).map((op,oi)=>`
+          <button class="option ${/[\u0600-\u06FF]/.test(op)?'ml':''}"
+                  onclick="choose(${qi},${oi})" id="o${qi}_${oi}">${op}</button>`).join('')}
+      </div>
+      <div class="feedback" id="f${qi}"></div>
+    </div>`).join('');
+  updateProgress();
+}
+
+function choose(qi,oi){
+  if(checked[qi]) return;
+  answers[qi]=oi;
+  const q = lessons[current].qs[qi];
+  const feedback = $('f'+qi);
+  for(let j=0;j<4;j++){
+    const b=$('o'+qi+'_'+j);
+    b.classList.remove('correct','wrong');
+    b.style.outline='none';
+  }
+  if(oi===q[5]){
+    $('o'+qi+'_'+oi).classList.add('correct');
+    checked[qi]=true;
+    for(let j=0;j<4;j++) $('o'+qi+'_'+j).disabled=true;
+    feedback.textContent = 'ശരിയാണ്! ⭐ ' + q[6];
+    feedback.className = 'feedback good';
+  } else {
+    $('o'+qi+'_'+oi).classList.add('wrong');
+    $('o'+qi+'_'+q[5]).classList.add('correct');
+    feedback.textContent = 'തെറ്റാണ്. ചുവപ്പ് നിറത്തിലുള്ളത് തെറ്റായ ഉത്തരം; പച്ച നിറത്തിലുള്ളത് ശരിയുത്തരം. ' + q[6] + ' വീണ്ടും ശ്രമിക്കൂ.';
+    feedback.className = 'feedback bad';
+  }
+  updateProgress();
+}
+
+function checkAll(){
+  let score=0;
+  const l = lessons[current];
+  l.qs.forEach((q,qi)=>{
+    checked[qi]=true;
+    for(let j=0;j<4;j++){
+      const b=$('o'+qi+'_'+j);
+      b.classList.remove('correct','wrong');
+      b.style.outline='none';
+      if(j===q[5]) b.classList.add('correct');
+      b.disabled=true;
+    }
+    const f=$('f'+qi);
+    if(answers[qi]===q[5]){
+      score++;
+      f.textContent='ശരി! ⭐ '+q[6];
+      f.className='feedback good';
+    } else {
+      f.textContent='ശരിയുത്തരം: '+q[q[5]+1]+'. '+q[6];
+      f.className='feedback bad';
+      if(answers[qi]!==undefined) $('o'+qi+'_'+answers[qi]).classList.add('wrong');
+    }
+  });
+  $('scorePill').textContent = score+' / '+l.qs.length+' ശരി';
+  $('result').textContent = score===l.qs.length
+    ? 'മിടുക്കൻ / മിടുക്കി! എല്ലാ ഉത്തരങ്ങളും ശരിയാണ്! 🎉'
+    : `നിങ്ങൾക്ക് ${l.qs.length}ൽ ${score} ശരി. തെറ്റിയവ വീണ്ടും പഠിച്ചുനോക്കൂ!`;
+  updateProgress();
+}
+
+function updateProgress(){
+  const total=lessons[current].qs.length;
+  const n=Object.keys(answers).length;
+  $('progressBar').style.width=(n/total*100)+'%';
+  if(!Object.keys(checked).length)
+    $('scorePill').textContent = n+' / '+total+' തിരഞ്ഞെടുത്തു';
+}
+
+function resetLesson(){ openLesson(current); }
+function nextLesson(){ openLesson((current+1)%lessons.length); }
+
+renderLessons();
+</script>
+</body>
+</html>
